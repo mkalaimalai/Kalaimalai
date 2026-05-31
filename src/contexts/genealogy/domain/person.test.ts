@@ -93,3 +93,31 @@ describe("Person.withChanges", () => {
     expect(p.value.withChanges({ legalName: "" }).ok).toBe(false);
   });
 });
+
+describe("Person photoUrl", () => {
+  it("stores a trimmed photoUrl and exposes it via the getter", () => {
+    const r = Person.create({
+      id: PersonId("p-photo"),
+      legalName: "Asha",
+      gender: "Female",
+      visibility: "Public",
+      branch: "Maternal",
+      photoUrl: "  data:image/jpeg;base64,abc  ",
+    });
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(r.value.photoUrl).toBe("data:image/jpeg;base64,abc");
+  });
+
+  it("treats blank photoUrl as undefined", () => {
+    const r = Person.create({
+      id: PersonId("p-photo2"),
+      legalName: "Asha",
+      gender: "Female",
+      visibility: "Public",
+      branch: "Maternal",
+      photoUrl: "   ",
+    });
+    expect(r.ok && r.value.photoUrl).toBeUndefined();
+  });
+});

@@ -39,6 +39,7 @@ export interface PersonProps {
   readonly birthplace?: string;
   readonly currentLocation?: string;
   readonly bio?: string;
+  readonly photoUrl?: string;
   readonly visibility: Visibility;
   readonly branch: Branch;
 }
@@ -83,6 +84,7 @@ export class Person {
         birthplace: props.birthplace?.trim() || undefined,
         currentLocation: props.currentLocation?.trim() || undefined,
         bio: props.bio?.trim() || undefined,
+        photoUrl: props.photoUrl?.trim() || undefined,
       }),
     );
   }
@@ -116,6 +118,9 @@ export class Person {
   }
   get bio(): string | undefined {
     return this.props.bio;
+  }
+  get photoUrl(): string | undefined {
+    return this.props.photoUrl;
   }
   get visibility(): Visibility {
     return this.props.visibility;
