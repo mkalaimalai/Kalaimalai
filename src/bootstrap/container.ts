@@ -17,8 +17,8 @@ import type { KeyValueStore } from "@/shared/infrastructure/key-value-store";
  * so no central file is edited when a context is added — keeping contexts
  * independently buildable.
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface AppContainer {}
+// Intentionally empty: each bounded context adds its key via declaration merging.
+export interface AppContainer {} // eslint-disable-line
 
 /** Shared dependencies handed to every context module factory at composition. */
 export interface SharedDeps {
