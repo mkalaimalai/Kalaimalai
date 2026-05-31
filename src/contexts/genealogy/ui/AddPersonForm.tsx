@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import type { Branch } from "@/shared/kernel";
-import { Button, Field, Input, Select } from "@/shared/ui";
+import { Button, Field, Input, Select, PhotoInput } from "@/shared/ui";
 import type { Gender, Visibility } from "../domain/person";
 import type { PersonDTO } from "../application/dtos";
 import type { AddPersonInput } from "../application/inputs";
@@ -27,6 +27,7 @@ export function AddPersonForm({
   const [addPerson, { isLoading }] = useAddPersonMutation();
   const [error, setError] = React.useState<string | null>(null);
 
+  const [photoUrl, setPhotoUrl] = React.useState<string | null>(null);
   const [legalName, setLegalName] = React.useState("");
   const [nickname, setNickname] = React.useState("");
   const [gender, setGender] = React.useState<Gender>("Unknown");
@@ -51,6 +52,7 @@ export function AddPersonForm({
       birthplace: birthplace.trim() || undefined,
       visibility,
       branch,
+      photoUrl: photoUrl ?? undefined,
     };
     const result = await addPerson(input);
     if ("error" in result) {
@@ -58,6 +60,7 @@ export function AddPersonForm({
       setError(err?.message ?? "Could not add this person.");
       return;
     }
+    setPhotoUrl(null);
     setLegalName("");
     setNickname("");
     setBirthYear("");
@@ -67,6 +70,14 @@ export function AddPersonForm({
 
   return (
     <form onSubmit={submit} className="flex flex-col gap-4" aria-label="Add a person">
+      <Field label="Photo" htmlFor="photo" hint="Optional — shown on the tree.">
+        <PhotoInput
+          value={photoUrl}
+          onChange={setPhotoUrl}
+          fallback={(legalName.trim()[0] ?? "?").toUpperCase()}
+        />
+      </Field>
+
       <Field label="Legal name" htmlFor="legalName">
         <Input
           id="legalName"
