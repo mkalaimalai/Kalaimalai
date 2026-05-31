@@ -18,6 +18,7 @@ interface StoredPerson {
   birthplace: string | null;
   currentLocation: string | null;
   bio: string | null;
+  photoUrl: string | null;
   visibility: Visibility;
   branch: Branch;
 }
@@ -36,6 +37,7 @@ function toStored(person: Person): StoredPerson {
     birthplace: person.birthplace ?? null,
     currentLocation: person.currentLocation ?? null,
     bio: person.bio ?? null,
+    photoUrl: person.photoUrl ?? null,
     visibility: person.visibility,
     branch: person.branch,
   };
@@ -54,6 +56,7 @@ function fromStored(stored: StoredPerson): Person {
     birthplace: stored.birthplace ?? undefined,
     currentLocation: stored.currentLocation ?? undefined,
     bio: stored.bio ?? undefined,
+    photoUrl: stored.photoUrl ?? undefined,
     visibility: stored.visibility,
     branch: stored.branch,
   });

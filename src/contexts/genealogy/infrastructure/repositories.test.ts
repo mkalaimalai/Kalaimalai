@@ -42,6 +42,25 @@ describe("LocalStoragePersonRepository", () => {
     expect((await repo2.list()).length).toBe(1);
   });
 
+  it("persists and reloads photoUrl", async () => {
+    const store = new InMemoryKeyValueStore();
+    const repo1 = new LocalStoragePersonRepository(store);
+    const r = Person.create({
+      id: PersonId("p-photo"),
+      legalName: "Asha",
+      gender: "Female",
+      visibility: "Public",
+      branch: "Maternal",
+      photoUrl: "data:image/jpeg;base64,abc",
+    });
+    if (!r.ok) throw new Error("setup");
+    await repo1.save(r.value);
+
+    const repo2 = new LocalStoragePersonRepository(store);
+    const loaded = await repo2.get(PersonId("p-photo"));
+    expect(loaded?.photoUrl).toBe("data:image/jpeg;base64,abc");
+  });
+
   it("deletes a person", async () => {
     const store = new InMemoryKeyValueStore();
     const repo = new LocalStoragePersonRepository(store);
