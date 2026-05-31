@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button, Card, CardContent } from "@/shared/ui";
 import type { TreeDTO } from "@/contexts/genealogy";
 import { useGetTreeQuery } from "@/contexts/genealogy/ui/api";
-import { FamilyTreeFan } from "@/contexts/genealogy/ui/tree/FamilyTreeFan";
+import { FamilyChartTree } from "@/contexts/genealogy/ui/tree/FamilyChartTree";
 import { AddPersonForm } from "@/contexts/genealogy/ui/AddPersonForm";
 
 /** Pick the most "central" person to root the fan on: ideally someone with
@@ -35,11 +35,6 @@ function pickDefaultFocal(tree: TreeDTO): string | undefined {
   );
 }
 
-function surnameOf(name: string): string {
-  const parts = name.trim().split(/\s+/);
-  return parts.length > 1 ? parts[parts.length - 1]! : parts[0] ?? "";
-}
-
 export default function TreePage() {
   const router = useRouter();
   const { data: tree, isLoading } = useGetTreeQuery();
@@ -53,9 +48,6 @@ export default function TreePage() {
   const focal = focalId ?? defaultFocal ?? null;
 
   const focalPerson = tree?.nodes.find((n) => n.id === focal) ?? null;
-  const familyName = focalPerson
-    ? `${surnameOf(focalPerson.legalName)} Family`
-    : "Our Family";
 
   return (
     <div className="flex flex-col gap-5">
@@ -116,10 +108,9 @@ export default function TreePage() {
           </CardContent>
         </Card>
       ) : (
-        <FamilyTreeFan
+        <FamilyChartTree
           tree={tree}
           focalId={focal}
-          familyName={familyName}
           onReroot={(id) => setFocalId(id)}
           onOpenProfile={(id) => router.push(`/tree/${id}`)}
         />

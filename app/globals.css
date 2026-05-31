@@ -49,3 +49,82 @@ body {
   outline-offset: 4px;
   border-radius: 9999px;
 }
+
+/* --- family-chart (f3) integration: leaf cards, gender-coloured --- */
+/* Gender tint resolved per card; default to paternal (male). */
+.fct-card { --fct-tint: hsl(var(--paternal)); }
+.fct-card--f { --fct-tint: hsl(var(--maternal)); }
+
+/* Faint dotted-grid backdrop, like the reference design. */
+.fct-cont {
+  background-color: hsl(var(--background));
+  background-image: radial-gradient(hsl(var(--border)) 1px, transparent 0);
+  background-size: 22px 22px;
+}
+.fct-cont .card-inner { box-shadow: none; background: transparent; }
+.fct-cont .link { stroke: hsl(145 35% 62%); stroke-width: 1.5px; fill: none; }
+.fct-cont .card_break .card-label { fill: hsl(var(--muted-foreground)); }
+
+/* Leaf card: three rounded corners, one sharp point (bottom-right). */
+.fct-card {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1px;
+  width: 116px;
+  min-height: 104px;
+  padding: 9px 8px 10px;
+  border: 1.5px solid var(--fct-tint);
+  /* Leaf: three corners rounded, bottom-right a sharp point. */
+  border-radius: 28px 28px 0 28px;
+  background: hsl(var(--background));
+  font-family: inherit;
+  text-align: center;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+.fct-card:hover { box-shadow: 0 5px 14px -8px var(--fct-tint); }
+/* Married-in spouses get a dashed outline. */
+.fct-card--married { border-style: dashed; }
+
+.fct-avatar {
+  display: block; width: 34px; height: 34px; margin-bottom: 3px; border-radius: 9999px;
+  background-size: cover; background-position: center;
+  background-color: hsl(var(--muted)); border: 1.5px solid var(--fct-tint);
+}
+.fct-name {
+  font-size: 11px; font-weight: 700; line-height: 1.2;
+  color: hsl(var(--foreground));
+}
+.fct-cross { color: hsl(var(--muted-foreground)); font-weight: 400; }
+.fct-sub { font-size: 10px; color: hsl(var(--muted-foreground)); }
+.fct-place { font-size: 10px; color: hsl(var(--muted-foreground)); opacity: 0.85; }
+
+/* Expand toggle: f3 shows its mini-tree indicator when a card has relatives
+   that aren't displayed yet. Restyle it into a circular "+" button centred
+   below the card (clicking the card expands to that person). */
+.fct-cont .card div.mini-tree {
+  top: auto; bottom: -11px; right: auto; left: 50%;
+  transform: translateX(-50%);
+  z-index: 1; text-align: center;
+}
+.fct-cont div.mini-tree svg { display: none; }
+.fct-cont div.mini-tree::after {
+  content: "+";
+  display: flex; align-items: center; justify-content: center;
+  width: 18px; height: 18px; border-radius: 9999px;
+  background: hsl(var(--background));
+  border: 1.5px solid hsl(var(--border));
+  color: hsl(var(--muted-foreground));
+  font-size: 13px; font-weight: 600; line-height: 1;
+}
+.fct-cont .card:hover div.mini-tree::after { border-color: var(--fct-tint); color: var(--fct-tint); }
+
+/* Hollow heart centred over the link between a married couple. */
+.fct-cont .link-text text {
+  fill: hsl(var(--maternal)) !important;
+  font-size: 16px !important;
+  dominant-baseline: central;
+  transform: translateY(3px);
+}
