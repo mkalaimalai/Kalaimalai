@@ -16,7 +16,7 @@ export default function PersonProfilePage() {
 
   return (
     <div className="flex flex-col gap-5">
-      <Link href="/tree" className="font-medium text-primary">
+      <Link href="/tree" className="font-medium text-brand">
         ← Back to the tree
       </Link>
 
