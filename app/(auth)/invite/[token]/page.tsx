@@ -1,13 +1,15 @@
-"use client";
+import { InvitePageClient } from "./InvitePageClient";
 
-import { useParams } from "next/navigation";
-import { InviteOnboarding } from "@/contexts/identity/ui/InviteOnboarding";
+/**
+ * Invite tokens are only known at link-share time, never at build time. The
+ * static export (`output: "export"`) requires at least one param, so we emit a
+ * single placeholder; the page reads the real token client-side via `useParams`
+ * and the SPA 404 fallback boots it on a direct visit.
+ */
+export function generateStaticParams() {
+  return [{ token: "_" }];
+}
 
 export default function InvitePage() {
-  const params = useParams<{ token: string }>();
-  return (
-    <div className="mx-auto max-w-md">
-      <InviteOnboarding token={params.token} />
-    </div>
-  );
+  return <InvitePageClient />;
 }
