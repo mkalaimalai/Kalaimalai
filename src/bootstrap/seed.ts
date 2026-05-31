@@ -92,34 +92,32 @@ export async function seedIfEmpty(
   }
 
   // --- Generation 1: grandparents ---
-  const arjun = await person({
+  const krishna = await person({
     legalName: "Krishna Murthy K V",
-    nickname: "Appa",
     gender: "Male",
     birthYear: 1940,
     passingYear: 2018,
     branch: "Paternal",
     birthplace: "Tirupati",
-    bio: "Patriarch of the Sharma family; schoolteacher.",
+    bio: "Patriarch of the Kalaimalai family; schoolteacher.",
   });
-  const lakshmi = await person({
+  const indrani = await person({
     legalName: "Indrani V R",
-    nickname: "Amma",
     gender: "Female",
     birthYear: 1945,
     branch: "Paternal",
     birthplace: "Madurai",
   });
-  const raman = await person({
-    legalName: "Seshadri V",
+  const dharwadkar = await person({
+    legalName: "Narasimha Rao Dharwakar",
     gender: "Male",
     birthYear: 1942,
     passingYear: 2020,
     branch: "Maternal",
     birthplace: "Tirupati",
   });
-  const saroja = await person({
-    legalName: "Leelavathi",
+  const laxmi = await person({
+    legalName: "Laxmi Devi",
     gender: "Female",
     birthYear: 1947,
     branch: "Maternal",
@@ -127,7 +125,7 @@ export async function seedIfEmpty(
   });
 
   // --- Generation 2: parents + siblings ---
-  const vijay = await person({
+  const madhu = await person({
     legalName: "Madhu Kalaimalai",
     gender: "Male",
     birthYear: 1969,
@@ -136,37 +134,37 @@ export async function seedIfEmpty(
     branch: "Paternal",
     bio: "Civil engineer; Software Architect.",
   });
-  const priya = await person({
-    legalName: "Priya Sharma",
+  const usha = await person({
+    legalName: "Usha KV",
     gender: "Female",
     birthYear: 1970,
     birthMonth: 11,
     birthDay: 2,
     branch: "Paternal",
   });
-  const meena = await person({
-    legalName: "Meena Sharma",
-    nickname: "Meenu",
+  const lata = await person({
+    legalName: "Lata Kalaimalai",
+    nickname: "Lata",
     gender: "Female",
     birthYear: 1972,
     birthMonth: 8,
     birthDay: 23,
     branch: "Maternal",
-    bio: "Doctor; married into the Sharma family.",
+    bio: "Doctor; married into the Kalaimalai family.",
   });
 
   // --- Generation 3: children ---
-  const anika = await person({
-    legalName: "Anika Sharma",
+  const manasa = await person({
+    legalName: "Manasa Kalaimalai",
     gender: "Female",
     birthYear: 1998,
     birthMonth: 3,
     birthDay: 4,
     branch: "Paternal",
   });
-  const rohan = await person({
-    legalName: "Rohan Sharma",
-    gender: "Male",
+  const bhumika = await person({
+    legalName: "Bhumika Kalaimalai",
+    gender: "Female",
     birthYear: 2001,
     birthMonth: 12,
     birthDay: 25,
@@ -174,21 +172,21 @@ export async function seedIfEmpty(
   });
 
   // --- Relationships ---
-  await relate("SpouseOf", arjun, lakshmi);
-  await relate("SpouseOf", raman, saroja);
-  await relate("SpouseOf", vijay, meena);
+  await relate("SpouseOf", krishna, indrani);
+  await relate("SpouseOf", dharwadkar, laxmi);
+  await relate("SpouseOf", madhu, lata);
 
-  await relate("ParentOf", arjun, vijay);
-  await relate("ParentOf", lakshmi, vijay);
-  await relate("ParentOf", arjun, priya);
-  await relate("ParentOf", lakshmi, priya);
-  await relate("ParentOf", raman, meena);
-  await relate("ParentOf", saroja, meena);
+  await relate("ParentOf", krishna, madhu);
+  await relate("ParentOf", indrani, madhu);
+  await relate("ParentOf", krishna, usha);
+  await relate("ParentOf", indrani, usha);
+  await relate("ParentOf", dharwadkar, lata);
+  await relate("ParentOf", laxmi, lata);
 
-  await relate("ParentOf", vijay, anika);
-  await relate("ParentOf", meena, anika);
-  await relate("ParentOf", vijay, rohan);
-  await relate("ParentOf", meena, rohan);
+  await relate("ParentOf", madhu, manasa);
+  await relate("ParentOf", lata, manasa);
+  await relate("ParentOf", madhu, bhumika);
+  await relate("ParentOf", lata, bhumika);
 
   // --- A few memories so Timeline / Feed are alive ---
   const m = container.memories;
@@ -198,30 +196,30 @@ export async function seedIfEmpty(
     storeMedia: true,
     date: { year: 2019, month: 10, day: 27 },
     place: "Madurai",
-    taggedPeople: [vijay, meena, anika, rohan],
+    taggedPeople: [madhu, lata, manasa, bhumika],
   });
   await m.addMemory({
-    caption: "Anika's college graduation",
+    caption: "manasa's college graduation",
     media: dataUrlSwatch(150),
     storeMedia: true,
     date: { year: 2020, month: 6, day: 12 },
     place: "Chennai",
-    taggedPeople: [anika, vijay, meena],
+    taggedPeople: [manasa, madhu, lata],
   });
   await m.addMemory({
-    caption: "Rohan's first cricket match",
+    caption: "bhumika's first cricket match",
     media: dataUrlSwatch(210),
     storeMedia: true,
     date: { year: 2015, month: 7, day: 18 },
     place: "Bengaluru",
-    taggedPeople: [rohan, vijay],
+    taggedPeople: [bhumika, madhu],
   });
 
   // Sign in as a starter Admin, linked to a real person in the tree, so
   // role-gated UI (e.g. approving structural changes) works out of the box.
   await container.identity.ensureSeedAdmin({
-    displayName: "Vijay Sharma",
-    linkedPersonId: vijay,
+    displayName: "madhu Kalaimalai",
+    linkedPersonId: madhu,
   });
 
   deps.store.write(SEED_FLAG, "1");

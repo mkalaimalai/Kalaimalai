@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { render, screen, within } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { ApproximateDate } from "@/shared/kernel";
 import type { TimelineDTO } from "../application/dtos";
-import { TimelineList } from "./TimelineView";
+import { TimelineAxis } from "./TimelineView";
 
 const day = (y: number, m: number, d: number) =>
   ApproximateDate.day(y, m, d).toJSON();
@@ -38,31 +38,31 @@ const TIMELINE: TimelineDTO = {
   ],
 };
 
-describe("TimelineList", () => {
-  it("groups entries by year with a heading per year", () => {
-    render(<TimelineList timeline={TIMELINE} />);
-    const headings = screen.getAllByRole("heading", { level: 2 });
-    expect(headings.map((h) => h.textContent)).toEqual(["1950", "1980"]);
-  });
-
-  it("renders entry titles and kind labels", () => {
-    render(<TimelineList timeline={TIMELINE} />);
+describe("TimelineAxis", () => {
+  it("renders entry titles along the horizontal axis", () => {
+    render(<TimelineAxis timeline={TIMELINE} />);
     expect(screen.getByText("Asha was born")).toBeInTheDocument();
     expect(screen.getByText("A picnic")).toBeInTheDocument();
     expect(screen.getByText("Ravi was born")).toBeInTheDocument();
   });
 
-  it("places two 1950 entries under the same year group", () => {
-    render(<TimelineList timeline={TIMELINE} />);
-    const list = screen.getByRole("list", { name: "Family timeline" });
-    const firstGroup = within(list).getAllByRole("listitem")[0]!;
-    expect(within(firstGroup).getByText("Asha was born")).toBeInTheDocument();
-    expect(within(firstGroup).getByText("A picnic")).toBeInTheDocument();
+  it("labels entries with their kind", () => {
+    render(<TimelineAxis timeline={TIMELINE} />);
+    // Two births and one memory → kind labels appear (legend + cards).
+    expect(screen.getAllByText("Birth").length).toBeGreaterThanOrEqual(2);
+    expect(screen.getAllByText("Memory").length).toBeGreaterThanOrEqual(1);
+  });
+
+  it("shows year tick labels spanning the entries", () => {
+    render(<TimelineAxis timeline={TIMELINE} />);
+    // The span 1950–1980 should surface round-number year ticks.
+    expect(screen.getByText("1950")).toBeInTheDocument();
+    expect(screen.getByText("1980")).toBeInTheDocument();
   });
 
   it("shows an empty state when there are no entries", () => {
     render(
-      <TimelineList timeline={{ scope: { kind: "WholeFamily" }, entries: [] }} />,
+      <TimelineAxis timeline={{ scope: { kind: "WholeFamily" }, entries: [] }} />,
     );
     expect(screen.getByRole("status")).toHaveTextContent(/no timeline entries/i);
   });
