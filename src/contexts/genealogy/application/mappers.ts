@@ -20,6 +20,7 @@ export function toPersonDTO(person: Person): PersonDTO {
     birthplace: person.birthplace ?? null,
     currentLocation: person.currentLocation ?? null,
     bio: person.bio ?? null,
+    photoUrl: person.photoUrl ?? null,
     visibility: person.visibility,
     branch: person.branch,
     isDeceased: person.isDeceased,

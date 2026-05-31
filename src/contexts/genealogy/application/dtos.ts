@@ -21,6 +21,7 @@ export interface PersonDTO {
   birthplace: string | null;
   currentLocation: string | null;
   bio: string | null;
+  photoUrl: string | null;
   visibility: Visibility;
   branch: "Maternal" | "Paternal";
   isDeceased: boolean;

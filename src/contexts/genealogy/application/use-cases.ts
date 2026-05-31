@@ -72,6 +72,7 @@ export function addPerson(deps: UseCaseDeps) {
       birthplace: input.birthplace,
       currentLocation: input.currentLocation,
       bio: input.bio,
+      photoUrl: input.photoUrl,
       visibility: input.visibility,
       branch: input.branch,
     });
@@ -101,6 +102,8 @@ export function editPerson(deps: UseCaseDeps) {
     if (input.currentLocation !== undefined)
       changes.currentLocation = input.currentLocation ?? undefined;
     if (input.bio !== undefined) changes.bio = input.bio ?? undefined;
+    if (input.photoUrl !== undefined)
+      changes.photoUrl = input.photoUrl ?? undefined;
     if (input.visibility !== undefined) changes.visibility = input.visibility;
     if (input.branch !== undefined) {
       if (!Branch.is(input.branch)) {

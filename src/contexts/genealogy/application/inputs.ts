@@ -16,6 +16,7 @@ export interface AddPersonInput {
   birthplace?: string;
   currentLocation?: string;
   bio?: string;
+  photoUrl?: string;
   visibility: Visibility;
   branch: Branch;
 }
@@ -30,6 +31,7 @@ export interface EditPersonInput {
   birthplace?: string | null;
   currentLocation?: string | null;
   bio?: string | null;
+  photoUrl?: string | null;
   visibility?: Visibility;
   branch?: Branch;
 }

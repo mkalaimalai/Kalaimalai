@@ -247,6 +247,34 @@ describe("getPersonProfile & explainRelationship", () => {
   });
 });
 
+describe("photoUrl round-trips through use cases", () => {
+  it("addPerson stores a photoUrl and getTree returns it", async () => {
+    const deps = makeDeps();
+    const created = await addPerson(deps)(
+      personInput({ photoUrl: "data:image/jpeg;base64,xyz" }),
+    );
+    expect(created.ok && created.value.photoUrl).toBe(
+      "data:image/jpeg;base64,xyz",
+    );
+  });
+
+  it("editPerson can set and clear a photoUrl", async () => {
+    const deps = makeDeps();
+    const created = await addPerson(deps)(personInput());
+    if (!created.ok) throw new Error("setup");
+    const set = await editPerson(deps)({
+      id: created.value.id,
+      photoUrl: "data:image/jpeg;base64,abc",
+    });
+    expect(set.ok && set.value.photoUrl).toBe("data:image/jpeg;base64,abc");
+    const cleared = await editPerson(deps)({
+      id: created.value.id,
+      photoUrl: null,
+    });
+    expect(cleared.ok && cleared.value.photoUrl).toBeNull();
+  });
+});
+
 describe("producer view methods", () => {
   it("maps people and relationships to view shapes", async () => {
     const deps = makeDeps();

@@ -95,8 +95,8 @@ export async function seedIfEmpty(
   const krishna = await person({
     legalName: "Krishna Murthy K V",
     gender: "Male",
-    birthYear: 1940,
-    passingYear: 2018,
+    birthYear: 1953,
+    passingYear: 2005,
     branch: "Paternal",
     birthplace: "Tirupati",
     bio: "Patriarch of the Kalaimalai family; schoolteacher.",
@@ -104,22 +104,22 @@ export async function seedIfEmpty(
   const indrani = await person({
     legalName: "Indrani V R",
     gender: "Female",
-    birthYear: 1945,
+    birthYear: 1958,
     branch: "Paternal",
     birthplace: "Madurai",
   });
   const dharwadkar = await person({
     legalName: "Narasimha Rao Dharwakar",
     gender: "Male",
-    birthYear: 1942,
-    passingYear: 2020,
+    birthYear: 1943,
+    passingYear: 2025,
     branch: "Maternal",
     birthplace: "Tirupati",
   });
   const laxmi = await person({
     legalName: "Laxmi Devi",
     gender: "Female",
-    birthYear: 1947,
+    birthYear: 1954,
     branch: "Maternal",
     birthplace: "Tirupati",
   });
@@ -139,16 +139,16 @@ export async function seedIfEmpty(
     gender: "Female",
     birthYear: 1970,
     birthMonth: 11,
-    birthDay: 2,
+    birthDay: 14,
     branch: "Paternal",
   });
   const lata = await person({
     legalName: "Lata Kalaimalai",
     nickname: "Lata",
     gender: "Female",
-    birthYear: 1972,
-    birthMonth: 8,
-    birthDay: 23,
+    birthYear: 1971,
+    birthMonth: 4,
+    birthDay: 6,
     branch: "Maternal",
     bio: "Doctor; married into the Kalaimalai family.",
   });
@@ -157,17 +157,17 @@ export async function seedIfEmpty(
   const manasa = await person({
     legalName: "Manasa Kalaimalai",
     gender: "Female",
-    birthYear: 1998,
-    birthMonth: 3,
-    birthDay: 4,
+    birthYear: 2003,
+    birthMonth: 5,
+    birthDay: 10,
     branch: "Paternal",
   });
   const bhumika = await person({
     legalName: "Bhumika Kalaimalai",
     gender: "Female",
-    birthYear: 2001,
-    birthMonth: 12,
-    birthDay: 25,
+    birthYear: 2004,
+    birthMonth: 11,
+    birthDay: 19,
     branch: "Paternal",
   });
 
