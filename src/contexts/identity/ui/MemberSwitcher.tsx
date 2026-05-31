@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { Field, Select } from "@/shared/ui";
 import {
   useGetCurrentMemberQuery,
   useListMembersQuery,
@@ -24,12 +23,22 @@ export function MemberSwitcher(): React.ReactElement {
   };
 
   return (
-    <Field label="Signed in as" htmlFor="member-switcher">
-      <Select
+    <div className="flex items-center gap-2 rounded-full bg-muted px-3 py-1.5">
+      <span
+        className="flex h-7 w-7 items-center justify-center rounded-full bg-brand text-sm font-bold text-primary-foreground"
+        aria-hidden
+      >
+        {(current?.displayName ?? "?").charAt(0).toUpperCase()}
+      </span>
+      <label htmlFor="member-switcher" className="sr-only">
+        Signed in as
+      </label>
+      <select
         id="member-switcher"
         value={current?.id ?? ""}
         onChange={onChange}
         disabled={isLoading || members.length === 0}
+        className="min-h-target bg-transparent text-sm font-semibold text-foreground focus-visible:outline-none"
       >
         <option value="" disabled>
           {members.length === 0 ? "No members yet" : "Choose a member…"}
@@ -39,7 +48,7 @@ export function MemberSwitcher(): React.ReactElement {
             {m.displayName} ({m.role})
           </option>
         ))}
-      </Select>
-    </Field>
+      </select>
+    </div>
   );
 }
