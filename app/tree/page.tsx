@@ -2,22 +2,60 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import type { Branch } from "@/shared/kernel";
-import { Button, Card, CardContent, Field, Select } from "@/shared/ui";
+import { Button, Card, CardContent } from "@/shared/ui";
+import type { TreeDTO } from "@/contexts/genealogy";
 import { useGetTreeQuery } from "@/contexts/genealogy/ui/api";
-import { TreeView } from "@/contexts/genealogy/ui/tree/TreeView";
+import { FamilyTreeFan } from "@/contexts/genealogy/ui/tree/FamilyTreeFan";
 import { AddPersonForm } from "@/contexts/genealogy/ui/AddPersonForm";
 
-type BranchFilter = "All" | Branch;
+/** Pick the most "central" person to root the fan on: ideally someone with
+ * ancestors AND a spouse AND children (the richest, most image-like view), then
+ * progressively weaker fallbacks. */
+function pickDefaultFocal(tree: TreeDTO): string | undefined {
+  const childCount = new Map<string, number>();
+  const hasParents = new Set<string>();
+  const spouses = new Set<string>();
+  for (const e of tree.edges) {
+    if (e.type === "ParentOf") {
+      childCount.set(e.fromPersonId, (childCount.get(e.fromPersonId) ?? 0) + 1);
+      hasParents.add(e.toPersonId);
+    } else if (e.type === "SpouseOf") {
+      spouses.add(e.fromPersonId);
+      spouses.add(e.toPersonId);
+    }
+  }
+  const kids = (id: string) => (childCount.get(id) ?? 0) > 0;
+  return (
+    tree.nodes.find(
+      (n) => hasParents.has(n.id) && spouses.has(n.id) && kids(n.id),
+    )?.id ??
+    tree.nodes.find((n) => spouses.has(n.id) && kids(n.id))?.id ??
+    tree.nodes.find((n) => kids(n.id))?.id ??
+    tree.nodes[0]?.id
+  );
+}
+
+function surnameOf(name: string): string {
+  const parts = name.trim().split(/\s+/);
+  return parts.length > 1 ? parts[parts.length - 1]! : parts[0] ?? "";
+}
 
 export default function TreePage() {
   const router = useRouter();
-  const [filter, setFilter] = React.useState<BranchFilter>("All");
+  const { data: tree, isLoading } = useGetTreeQuery();
+  const [focalId, setFocalId] = React.useState<string | null>(null);
   const [adding, setAdding] = React.useState(false);
-  const branch = filter === "All" ? undefined : filter;
-  const { data: tree, isLoading } = useGetTreeQuery(
-    branch ? { branch } : undefined,
+
+  const defaultFocal = React.useMemo(
+    () => (tree ? pickDefaultFocal(tree) : undefined),
+    [tree],
   );
+  const focal = focalId ?? defaultFocal ?? null;
+
+  const focalPerson = tree?.nodes.find((n) => n.id === focal) ?? null;
+  const familyName = focalPerson
+    ? `${surnameOf(focalPerson.legalName)} Family`
+    : "Our Family";
 
   return (
     <div className="flex flex-col gap-5">
@@ -25,24 +63,25 @@ export default function TreePage() {
         <div>
           <h1 className="text-2xl font-bold">Family Tree</h1>
           <p className="text-muted-foreground">
-            Click a person to view their profile. Filter by lineage to focus a
-            branch.
+            {focalPerson
+              ? `Centered on ${focalPerson.displayName}. Ancestors fan upward; children grow below.`
+              : "Your family, woven together."}
           </p>
         </div>
         <div className="flex items-end gap-3">
-          <div className="w-44">
-            <Field label="Lineage" htmlFor="branch-filter">
-              <Select
-                id="branch-filter"
-                value={filter}
-                onChange={(e) => setFilter(e.target.value as BranchFilter)}
-              >
-                <option value="All">Whole family</option>
-                <option value="Maternal">Maternal</option>
-                <option value="Paternal">Paternal</option>
-              </Select>
-            </Field>
-          </div>
+          {focal && defaultFocal && focal !== defaultFocal ? (
+            <Button variant="outline" onClick={() => setFocalId(null)}>
+              Recenter
+            </Button>
+          ) : null}
+          {focalPerson ? (
+            <Button
+              variant="outline"
+              onClick={() => router.push(`/tree/${focalPerson.id}`)}
+            >
+              View profile
+            </Button>
+          ) : null}
           <Button onClick={() => setAdding((v) => !v)}>
             {adding ? "Close" : "Add a person"}
           </Button>
@@ -62,23 +101,29 @@ export default function TreePage() {
         </Card>
       ) : null}
 
-      <Card>
-        <CardContent className="overflow-auto p-2">
-          {isLoading || !tree ? (
+      {isLoading || !tree ? (
+        <Card>
+          <CardContent>
             <p className="p-6 text-muted-foreground">Loading the tree…</p>
-          ) : tree.nodes.length === 0 ? (
+          </CardContent>
+        </Card>
+      ) : tree.nodes.length === 0 || !focal ? (
+        <Card>
+          <CardContent>
             <p className="p-6 text-muted-foreground">
               No one here yet. Use “Add a person” to begin your tree.
             </p>
-          ) : (
-            <TreeView
-              tree={tree}
-              branch={branch}
-              onSelectPerson={(id) => router.push(`/tree/${id}`)}
-            />
-          )}
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      ) : (
+        <FamilyTreeFan
+          tree={tree}
+          focalId={focal}
+          familyName={familyName}
+          onReroot={(id) => setFocalId(id)}
+          onOpenProfile={(id) => router.push(`/tree/${id}`)}
+        />
+      )}
     </div>
   );
 }

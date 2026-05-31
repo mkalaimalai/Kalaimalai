@@ -35,3 +35,16 @@ body {
   outline: 3px solid hsl(var(--primary));
   outline-offset: 2px;
 }
+
+/* Ancestor-fan tree nodes: gentle hover/focus affordance. */
+.ff-node {
+  transition: opacity 0.15s ease;
+}
+.ff-node:hover {
+  opacity: 0.82;
+}
+.ff-node:focus-visible {
+  outline: 3px solid hsl(var(--primary));
+  outline-offset: 4px;
+  border-radius: 9999px;
+}

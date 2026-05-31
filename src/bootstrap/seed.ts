@@ -93,17 +93,17 @@ export async function seedIfEmpty(
 
   // --- Generation 1: grandparents ---
   const arjun = await person({
-    legalName: "Arjun Sharma",
+    legalName: "Krishna Murthy K V",
     nickname: "Appa",
     gender: "Male",
     birthYear: 1940,
     passingYear: 2018,
     branch: "Paternal",
-    birthplace: "Madurai",
+    birthplace: "Tirupati",
     bio: "Patriarch of the Sharma family; schoolteacher.",
   });
   const lakshmi = await person({
-    legalName: "Lakshmi Sharma",
+    legalName: "Indrani V R",
     nickname: "Amma",
     gender: "Female",
     birthYear: 1945,
@@ -111,30 +111,30 @@ export async function seedIfEmpty(
     birthplace: "Madurai",
   });
   const raman = await person({
-    legalName: "Raman Iyer",
+    legalName: "Seshadri V",
     gender: "Male",
     birthYear: 1942,
     passingYear: 2020,
     branch: "Maternal",
-    birthplace: "Thanjavur",
+    birthplace: "Tirupati",
   });
   const saroja = await person({
-    legalName: "Saroja Iyer",
+    legalName: "Leelavathi",
     gender: "Female",
     birthYear: 1947,
     branch: "Maternal",
-    birthplace: "Thanjavur",
+    birthplace: "Tirupati",
   });
 
   // --- Generation 2: parents + siblings ---
   const vijay = await person({
-    legalName: "Vijay Sharma",
+    legalName: "Madhu Kalaimalai",
     gender: "Male",
-    birthYear: 1968,
-    birthMonth: 5,
-    birthDay: 14,
+    birthYear: 1969,
+    birthMonth: 9,
+    birthDay: 10,
     branch: "Paternal",
-    bio: "Civil engineer; loves cricket.",
+    bio: "Civil engineer; Software Architect.",
   });
   const priya = await person({
     legalName: "Priya Sharma",
