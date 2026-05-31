@@ -1,0 +1,51 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Tinybeans "Sky & Coral" tokens. Elder-first contrast preserved. */
+:root {
+  --background: 200 50% 97%;     /* soft sky-tinted off-white */
+  --foreground: 203 35% 22%;     /* slate */
+  --primary: 9 100% 70%;         /* coral CTA */
+  --primary-foreground: 0 0% 100%;
+  --brand: 196 64% 33%;          /* teal — logo, links, headings accent */
+  --muted: 205 70% 95%;          /* light sky surface */
+  --muted-foreground: 203 18% 42%;
+  --border: 205 55% 91%;         /* soft sky border */
+  --maternal: 342 79% 69%;       /* pink */
+  --paternal: 199 53% 51%;       /* sky blue */
+}
+
+/* "Elder mode" scales up type and target sizes. */
+.elder-mode {
+  font-size: 1.18rem;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Visible focus for keyboard users (N5). */
+:focus-visible {
+  outline: 3px solid hsl(var(--brand));
+  outline-offset: 2px;
+}
+
+/* Ancestor-fan tree nodes: gentle hover/focus affordance. */
+.ff-node {
+  transition: opacity 0.15s ease;
+}
+.ff-node:hover {
+  opacity: 0.82;
+}
+.ff-node:focus-visible {
+  outline: 3px solid hsl(var(--primary));
+  outline-offset: 4px;
+  border-radius: 9999px;
+}
