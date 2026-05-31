@@ -8,7 +8,7 @@ export const Input = React.forwardRef<
   <input
     ref={ref}
     className={cn(
-      "min-h-target w-full rounded-lg border-2 border-border bg-background px-3 py-2 text-base",
+      "min-h-target w-full rounded-xl border-2 border-border bg-background px-3 py-2 text-base",
       "focus-visible:border-primary",
       className,
     )}
@@ -24,7 +24,7 @@ export const Select = React.forwardRef<
   <select
     ref={ref}
     className={cn(
-      "min-h-target w-full rounded-lg border-2 border-border bg-background px-3 py-2 text-base",
+      "min-h-target w-full rounded-xl border-2 border-border bg-background px-3 py-2 text-base",
       "focus-visible:border-primary",
       className,
     )}
