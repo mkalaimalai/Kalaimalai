@@ -14,6 +14,7 @@ function person(id: string, gender: PersonDTO["gender"]): PersonDTO {
     birthplace: null,
     currentLocation: null,
     bio: null,
+    photoUrl: null,
     visibility: "Public",
     branch: "Paternal",
     isDeceased: false,

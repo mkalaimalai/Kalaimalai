@@ -16,6 +16,7 @@ function node(id: string, over: Partial<PersonDTO> = {}): PersonDTO {
     birthplace: null,
     currentLocation: null,
     bio: null,
+    photoUrl: null,
     visibility: "Public",
     branch: "Paternal",
     isDeceased: false,
